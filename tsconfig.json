@@ -3,22 +3,42 @@
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "skipLibCheck": true,
-
+    "types": [
+      "vitest/globals"
+    ],
+    "paths": {
+      "@entities": [
+        "./lib/entities"
+      ],
+      "@utils": [
+        "./lib/utils"
+      ],
+      "@constants": [
+        "./lib/models/constants"
+      ],
+      "@enums": [
+        "./lib/models/enums"
+      ],
+    },
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
   },
-  "include": ["lib"]
+  "include": [
+    "lib",
+  ],
 }

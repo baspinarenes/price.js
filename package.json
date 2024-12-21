@@ -1,7 +1,7 @@
 {
   "name": "price.js",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "files": [
     "dist"
@@ -16,9 +16,10 @@
     "test:watch": "vitest watch",
     "coverage": "vitest run --coverage",
     "linker": "yarn link && cd playgrounds && ls && yarn link \"price.js\"",
-    "playground:price": "cd playgrounds && vite-node price.ts"
+    "playground:price": "yarn linker && vite-node playgrounds/price.ts"
   },
   "devDependencies": {
+    "@types/big.js": "^6.2.2",
     "@types/node": "^22.10.2",
     "@vitest/coverage-v8": "2.1.8",
     "typescript": "~5.6.2",
@@ -26,5 +27,8 @@
     "vite-plugin-dts": "^4.4.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "big.js": "^6.2.2"
   }
 }
