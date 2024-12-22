@@ -1,7 +1,7 @@
 {
   "name": "price.js",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "files": [
     "dist"
@@ -16,7 +16,8 @@
     "test:watch": "vitest watch",
     "coverage": "vitest run --coverage",
     "linker": "yarn link && cd playgrounds && ls && yarn link \"price.js\"",
-    "playground:price": "yarn linker && vite-node playgrounds/price.ts"
+    "playground:price": "yarn linker && vite-node playgrounds/price.ts",
+    "playground:price-formatter": "yarn linker && vite-node playgrounds/price-formatter.ts"
   },
   "devDependencies": {
     "@types/big.js": "^6.2.2",

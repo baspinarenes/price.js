@@ -1,5 +1,6 @@
 import { LOG_PREFIX } from "@constants";
 import { RoundStrategy } from "@enums";
+import { PriceFormatterOptions, PriceParts } from "@types";
 import {
   ceil,
   divide,
@@ -10,24 +11,25 @@ import {
   plus,
   round,
 } from "@utils";
+import { PriceFormatter } from "@entities";
 
 export class Price {
-  private value: number;
+  amount: number;
 
-  constructor(v: number) {
-    this.value = v;
+  constructor(amount: number) {
+    this.amount = amount;
   }
 
   add(amount: number | Price): Price {
-    return new Price(plus(this.value, this.getAmountValue(amount)));
+    return new Price(plus(this.amount, this.getAmountValue(amount)));
   }
 
   subtract(amount: number | Price): Price {
-    return new Price(minus(this.value, this.getAmountValue(amount)));
+    return new Price(minus(this.amount, this.getAmountValue(amount)));
   }
 
   multiply(amount: number | Price): Price {
-    return new Price(multiply(this.value, this.getAmountValue(amount)));
+    return new Price(multiply(this.amount, this.getAmountValue(amount)));
   }
 
   divide(amount: number | Price): Price {
@@ -35,7 +37,7 @@ export class Price {
       throw new Error(LOG_PREFIX + "Cannot divide by zero.");
     }
 
-    return new Price(divide(this.value, this.getAmountValue(amount)));
+    return new Price(divide(this.amount, this.getAmountValue(amount)));
   }
 
   round(
@@ -46,14 +48,14 @@ export class Price {
 
     switch (strategy) {
       case RoundStrategy.UP:
-        roundedValue = ceil(this.value, decimals);
+        roundedValue = ceil(this.amount, decimals);
         break;
       case RoundStrategy.DOWN:
-        roundedValue = floor(this.value, decimals);
+        roundedValue = floor(this.amount, decimals);
         break;
       case RoundStrategy.NEAREST:
       default:
-        roundedValue = round(this.value, decimals);
+        roundedValue = round(this.amount, decimals);
         break;
     }
 
@@ -70,33 +72,40 @@ export class Price {
     return this.multiply(1 - (rate > 1 ? rate / 100 : rate));
   }
 
-  equal(amount: number | Price): boolean {
-    return equal(this.value, this.getAmountValue(amount));
+  equals(amount: number | Price): boolean {
+    return equal(this.amount, this.getAmountValue(amount));
   }
 
-  integer(): number {
-    return floor(this.value, 0);
+  toInt(): number {
+    return floor(this.amount, 0);
   }
 
-  fraction(): number {
-    return minus(this.value, this.integer());
+  toFraction(): number {
+    return minus(this.amount, this.toInt());
+  }
+
+  format(options: PriceFormatterOptions): string {
+    return PriceFormatter.create(options).format(this);
+  }
+
+  formatToParts(options: PriceFormatterOptions): PriceParts {
+    return PriceFormatter.create(options).formatToParts(this);
   }
 
   valueOf(): number {
-    return this.value;
+    return this.amount;
   }
 
   toString(): string {
-    return String(this.value);
+    return String(this.amount);
   }
 
   // Helpers
 
   private getAmountValue(price: number | Price): number {
-    return price instanceof Price ? price.value : price;
+    return price instanceof Price ? price.amount : price;
   }
 }
 
-export function pricify(value: number) {
-  return new Price(value);
-}
+export const pricify = (amount: number) => new Price(amount);
+export const price = pricify;

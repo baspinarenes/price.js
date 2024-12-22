@@ -33,6 +33,7 @@ export default defineConfig({
     coverage: {
       reporter: ["text", "html"],
       include: ["lib"],
+      exclude: ["lib/models/**", "lib/**/*.test.ts"],
       all: true,
       thresholds: {
         lines: 100,

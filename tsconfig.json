@@ -25,6 +25,9 @@
       "@enums": [
         "./lib/models/enums"
       ],
+      "@types": [
+        "./lib/models/types"
+      ],
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

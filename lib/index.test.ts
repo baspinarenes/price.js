@@ -1,7 +1,7 @@
 import * as index from "./index";
-import { Price, pricify } from "@entities";
+import { Price, pricify, PriceFormatter } from "@entities";
 
-const allowedExports = { Price, pricify };
+const allowedExports = { Price, pricify, PriceFormatter };
 
 describe.only("Index tests", () => {
   it("should only export allowed entities", () => {

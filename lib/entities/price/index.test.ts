@@ -1,4 +1,4 @@
-import { pricify, Price } from "@entities";
+import { pricify, Price, PriceFormatter } from "@entities";
 import { LOG_PREFIX } from "@constants";
 import { RoundStrategy } from "@enums";
 
@@ -115,31 +115,69 @@ describe.each([
     });
   });
 
-  describe("Equal method tests", () => {
+  describe("Equals method tests", () => {
     test("should return true for equal prices", () => {
-      expect(util(0.1).add(0.2).equal(0.3)).toBe(true);
-      expect(util(Math.PI).equal(Math.PI)).toBe(true);
-      expect(util(0.1).add(0.2).equal(util(0.3))).toBe(true);
+      expect(util(0.1).add(0.2).equals(0.3)).toBe(true);
+      expect(util(Math.PI).equals(Math.PI)).toBe(true);
+      expect(util(0.1).add(0.2).equals(util(0.3))).toBe(true);
     });
 
     test("should return false for unequal prices", () => {
-      expect(util(0.1).equal(0.2)).toBe(false);
-      expect(util(0.1).equal(util(0.2))).toBe(false);
+      expect(util(0.1).equals(0.2)).toBe(false);
+      expect(util(0.1).equals(util(0.2))).toBe(false);
     });
   });
 
-  describe("Integer method tests", () => {
+  describe("ToInt method tests", () => {
     test("should return the integer part", () => {
-      expect(util(5.625).integer()).toBe(5);
-      expect(util(0).integer()).toBe(0);
+      expect(util(5.625).toInt()).toBe(5);
+      expect(util(0).toInt()).toBe(0);
     });
   });
 
-  describe("Fraction method tests", () => {
+  describe("ToString method tests", () => {
+    test("should return the amount as string", () => {
+      expect(util(-3.14).toString()).toEqual("-3.14");
+    });
+  });
+
+  describe("ToFraction method tests", () => {
     test("should return the fractional part", () => {
-      expect(util(5.625).fraction()).toBeCloseTo(0.625);
-      expect(util(-3.14).fraction()).toBeCloseTo(-0.14);
-      expect(util(0).fraction()).toBe(0);
+      expect(util(5.625).toFraction()).toBeCloseTo(0.625);
+      expect(util(-3.14).toFraction()).toBeCloseTo(-0.14);
+      expect(util(0).toFraction()).toBe(0);
+    });
+  });
+
+  describe("Format method tests", () => {
+    test("should create formatter and call format method", () => {
+      const mockFormat = vi.fn();
+      vi.spyOn(PriceFormatter, "create").mockReturnValue({
+        format: mockFormat,
+      } as any);
+
+      const options = { locale: "TR" };
+      const price = 5.625;
+      util(price).format(options);
+
+      expect(PriceFormatter.create).toBeCalledWith(options);
+      expect(mockFormat).toBeCalledWith(new Price(price));
+    });
+  });
+
+  describe("FormatToParts method tests", () => {
+    test("should create formatter and call formatToParts method", () => {
+      const mockFormatToParts = vi.fn();
+      vi.spyOn(PriceFormatter, "create").mockReturnValue({
+        formatToParts: mockFormatToParts,
+      } as any);
+
+      const options = { locale: "TR" };
+      const price = 5.625;
+      util(price).formatToParts(options);
+
+      expect(PriceFormatter.create).toBeCalledWith(options);
+      expect(mockFormatToParts).toBeCalledWith(new Price(price));
     });
   });
 });
