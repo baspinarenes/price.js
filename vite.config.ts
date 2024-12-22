@@ -18,7 +18,7 @@ export default defineConfig({
     minify: "esbuild",
     lib: {
       entry: path.resolve(__dirname, "lib/index.ts"),
-      name: "pricify",
+      name: "price.js",
       fileName: (format, entryName) =>
         format === "cjs" ? `${entryName}.cjs` : `${entryName}.js`,
       formats: ["es", "cjs"],
